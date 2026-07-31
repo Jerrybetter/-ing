@@ -12,7 +12,7 @@ const IMAGES = [
   "https://images.unsplash.com/photo-1542435503-956c227f4d16?w=500&q=80", // notes
   "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?w=500&q=80", // sketch
   "https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?w=500&q=80", // meeting
-  "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=500&q=80", // laptop
+  "https://images.unsplash.com/photo-1531973576160-7125cd663d86?w=500&q=80", // laptop
 ];
 
 const ITEM_COUNT = 20;

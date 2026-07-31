@@ -132,7 +132,9 @@ export function ImageUploader({ onImagesSelected, isLoading, maxImages = 5 }: Im
           <Camera className="w-3.5 h-3.5" />
           上传你的工位照片
         </button>
-        <p className="text-zinc-500 text-xs mt-3 opacity-60 font-medium">支持多图上传 (最多5张)</p>
+        {maxImages > 1 && (
+          <p className="text-zinc-500 text-xs mt-3 opacity-60 font-medium">支持多图上传 (最多{maxImages}张)</p>
+        )}
       </div>
     </div>
   );

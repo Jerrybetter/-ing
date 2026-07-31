@@ -123,44 +123,6 @@ export function ResultView({ result, imageUrls }: ResultViewProps) {
           <StickyDimensions result={result} />
         </div>
 
-        {/* Work Habits */}
-        {result.workHabits && result.workHabits.length > 0 && (
-          <div className="bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-800">
-            <div className="flex items-center gap-3 mb-5">
-              <Briefcase className="w-5 h-5 text-indigo-400" />
-              <h3 className="text-lg font-bold text-zinc-100 tracking-tight">行为图鉴</h3>
-              <span className="text-xs text-zinc-500 ml-auto hidden sm:inline font-medium">桌面出卖了你的习惯</span>
-            </div>
-            <ul className="space-y-4">
-              {result.workHabits.map((habit, idx) => (
-                <li key={idx} className="flex gap-4 text-zinc-300 text-sm sm:text-base leading-relaxed bg-zinc-800/50 p-4 rounded-2xl">
-                  <span className="font-black shrink-0 text-indigo-500/50">0{idx + 1}</span>
-                  <span>{habit}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* Catchphrases */}
-        {result.catchphrases && result.catchphrases.length > 0 && (
-          <div className="bg-zinc-900/50 rounded-3xl p-6 sm:p-8 border border-zinc-800/50">
-            <div className="flex items-center gap-3 mb-5">
-              <Quote className="w-5 h-5 text-pink-400" />
-              <h3 className="text-lg font-bold text-zinc-100 tracking-tight">高频潜台词</h3>
-              <span className="text-xs text-zinc-500 ml-auto hidden sm:inline font-medium">是不是经常这么说？</span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {result.catchphrases.map((phrase, idx) => (
-                <div key={idx} className="bg-zinc-800 p-5 rounded-2xl border border-zinc-700/50 relative overflow-hidden group">
-                  <MessageCircle className="w-16 h-16 text-zinc-700/20 absolute -bottom-4 -right-2 transform -rotate-12 transition-transform group-hover:scale-110" />
-                  <p className="text-zinc-200 font-medium relative z-10 text-lg">"{phrase}"</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Easter Eggs */}
         {result.easterEggs && result.easterEggs.length > 0 && (
           <div className="bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-800">

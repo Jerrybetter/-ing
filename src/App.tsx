@@ -11,6 +11,8 @@ import { DeskPersonalityResult } from './types';
 import { Sparkles, Loader2, AlertCircle, ArrowLeft, X, Wand2 } from 'lucide-react';
 import { RotatingImages } from './components/RotatingImages';
 
+import { ArtistFeatures } from './components/ArtistFeatures';
+
 export default function App() {
   const [appMode, setAppMode] = useState<'analyze' | 'redesign'>('analyze');
   const [imageUrls, setImageUrls] = useState<string[]>([]);
@@ -34,7 +36,29 @@ export default function App() {
     setError(null);
 
     if (appMode === 'redesign') {
-      setIsLoading(false);
+      try {
+        const checkRes = await fetch('/api/check-workspace', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageBase64: base64Urls[0] })
+        });
+        const checkData = await checkRes.json();
+        
+        if (checkRes.ok && checkData.isWorkspace === false) {
+          setToastMessage("图片好像不是工位哦，换一张你的真实工位照吧～");
+          setImageUrls([]);
+        } else if (!checkRes.ok) {
+           console.error("Failed to check workspace:", checkData);
+           setToastMessage("校验图片失败，请稍后重试");
+           setImageUrls([]);
+        }
+      } catch (err) {
+        console.error("Error checking workspace:", err);
+        setToastMessage("网络异常，无法校验图片");
+        setImageUrls([]);
+      } finally {
+        setIsLoading(false);
+      }
       return;
     }
 
@@ -129,7 +153,7 @@ export default function App() {
     );
   };
 
-  if (appMode === 'redesign' && imageUrls.length > 0) {
+  if (appMode === 'redesign' && imageUrls.length > 0 && !isLoading) {
     return (
       <div className="min-h-screen text-zinc-50 font-sans selection:bg-white/30 bg-[#111111] relative">
         {renderCloseButton()}
@@ -178,7 +202,7 @@ export default function App() {
               {appMode === 'analyze' ? '你的工位比你更诚实' : '爆改我的生活方式'}
             </h1>
             <p className="text-xs sm:text-sm text-zinc-400 max-w-2xl mx-auto font-medium tracking-tight whitespace-nowrap mb-6">
-              {appMode === 'analyze' ? '读出被你挤掉的那件事' : '爆改的不是工位，是你在这待着的方式。'}
+              {appMode === 'analyze' ? '看看你的生活习惯留下了哪些痕迹。' : '爆改的不是工位，是你的生活体验'}
             </p>
             
             <div className="flex bg-zinc-900/80 p-1 rounded-full border border-zinc-800 backdrop-blur-md">
@@ -233,8 +257,12 @@ export default function App() {
                 <Loader2 className="w-10 h-10 text-white animate-spin" />
               </div>
             </div>
-            <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">正在解析环境...</h3>
-            <p className="text-sm text-zinc-400 font-medium">AI 正在深度读取画面细节</p>
+            <h3 className="text-2xl font-bold text-white mb-3 tracking-tight">
+              {appMode === 'redesign' ? '正在校验工位...' : '正在解析环境...'}
+            </h3>
+            <p className="text-sm text-zinc-400 font-medium">
+              {appMode === 'redesign' ? 'AI 正在确认图片内容' : 'AI 正在深度读取画面细节'}
+            </p>
           </div>
         )}
 

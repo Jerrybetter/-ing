@@ -1,6 +1,38 @@
 import React, { useState } from 'react';
-import { Loader2, Download, ArrowLeft, Wand2, Plus } from 'lucide-react';
+import { Loader2, Download, ArrowLeft, Wand2, Plus, ShoppingCart, ExternalLink, Tag, X } from 'lucide-react';
 import { MinimalIllustration, NaturalIllustration, TechIllustration, VintageIllustration } from './StyleIllustrations';
+import { ArtistFeatures } from './ArtistFeatures';
+
+const MOCK_PRODUCTS = [
+  {
+    id: 1,
+    name: "Herman Miller Aeron 人体工学椅",
+    brand: "Herman Miller",
+    price: "¥12,800",
+    image: "https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop&q=80&w=150&h=150"
+  },
+  {
+    id: 2,
+    name: "BenQ ScreenBar Halo 屏幕挂灯",
+    brand: "BenQ",
+    price: "¥1,299",
+    image: "https://images.unsplash.com/photo-1542744094-3a31f272c490?auto=format&fit=crop&q=80&w=150&h=150"
+  },
+  {
+    id: 3,
+    name: "Keychron Q1 Pro 机械键盘",
+    brand: "Keychron",
+    price: "¥1,198",
+    image: "https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&q=80&w=150&h=150"
+  },
+  {
+    id: 4,
+    name: "胡桃木实木洞洞板",
+    brand: "WoodWorks",
+    price: "¥299",
+    image: "https://images.unsplash.com/photo-1531835551805-16d8e1ddfa3e?auto=format&fit=crop&q=80&w=150&h=150"
+  }
+];
 
 interface RedesignViewProps {
   originalImage: string;
@@ -45,6 +77,7 @@ export function RedesignView({ originalImage, onReset }: RedesignViewProps) {
   const [error, setError] = useState<string | null>(null);
   const [imgRatio, setImgRatio] = useState<number>(1);
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   React.useEffect(() => {
     const img = new Image();
@@ -260,7 +293,14 @@ ${styleDesc}
             </div>
             
             {generatedImage && !isGenerating && (
-              <div className="absolute bottom-4 right-4 flex justify-end z-20">
+              <div className="absolute bottom-4 right-4 flex justify-end gap-3 z-20">
+                <button
+                  onClick={() => setIsDrawerOpen(true)}
+                  className="flex items-center gap-2 px-6 py-3 bg-indigo-500 text-white rounded-full font-bold hover:bg-indigo-600 transition-colors shadow-lg hover:scale-105 active:scale-95 backdrop-blur-md"
+                >
+                  <Tag className="w-4 h-4" />
+                  图中所见
+                </button>
                 <button
                   onClick={handleDownload}
                   className="flex items-center gap-2 px-6 py-3 bg-white text-black rounded-full font-bold hover:bg-zinc-200 transition-colors shadow-lg hover:scale-105 active:scale-95"
@@ -315,11 +355,13 @@ ${styleDesc}
              })}
            </div>
         </div>
+        
+        <ArtistFeatures />
       </div>
       {/* Fullscreen Image Modal */}
       {fullscreenImage && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm cursor-zoom-out p-4 md:p-8"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm cursor-zoom-out p-4 md:p-8"
           onClick={() => setFullscreenImage(null)}
         >
           <img 
@@ -327,6 +369,53 @@ ${styleDesc}
             alt="Fullscreen" 
             className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
           />
+        </div>
+      )}
+
+      {/* Product Drawer */}
+      {isDrawerOpen && (
+        <div className="fixed inset-0 z-[120] flex justify-end">
+          <div 
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
+            onClick={() => setIsDrawerOpen(false)}
+          />
+          <div className="relative w-full max-w-sm bg-[#161616] border-l border-zinc-800 h-full overflow-y-auto flex flex-col shadow-2xl animate-in slide-in-from-right duration-300">
+            <div className="p-6 border-b border-zinc-800/50 flex items-center justify-between sticky top-0 bg-[#161616]/95 backdrop-blur z-10">
+              <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                <Tag className="w-5 h-5 text-indigo-400" />
+                图中好物
+              </h3>
+              <button 
+                onClick={() => setIsDrawerOpen(false)}
+                className="p-2 hover:bg-zinc-800 rounded-full text-zinc-400 hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="p-6 flex flex-col gap-6">
+              {MOCK_PRODUCTS.map(product => (
+                <div key={product.id} className="group relative bg-black/30 rounded-2xl p-3 border border-white/5 hover:border-indigo-500/30 transition-colors flex gap-4">
+                  <div className="w-24 h-24 shrink-0 rounded-xl overflow-hidden bg-black/50 relative">
+                    <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  </div>
+                  <div className="flex flex-col py-1">
+                    <span className="text-xs text-zinc-500 font-medium mb-1">{product.brand}</span>
+                    <h4 className="text-sm text-zinc-200 font-medium line-clamp-2 mb-2 group-hover:text-white transition-colors leading-snug">{product.name}</h4>
+                    <span className="text-sm font-bold text-indigo-400 mt-auto">{product.price}</span>
+                  </div>
+                  
+                  {/* Hover Overlay Button */}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px] rounded-2xl">
+                    <button className="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white px-5 py-2.5 rounded-full text-sm font-medium transition-all transform translate-y-4 group-hover:translate-y-0 duration-300 shadow-xl shadow-indigo-500/20">
+                      <ShoppingCart className="w-4 h-4" />
+                      一键下单
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
