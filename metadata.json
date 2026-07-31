@@ -1,0 +1,6 @@
+{
+  "name": "工位人格测评 (Desk Personality Test)",
+  "description": "基于用户上传的工位实拍图片，完成「工位人格测评」。拍下你的工位，AI深度解析你的职场灵魂。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
