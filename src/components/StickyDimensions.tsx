@@ -66,19 +66,37 @@ export function StickyDimensions({ result }: { result: DeskPersonalityResult }) 
             const isCurrent = activeIndex === i;
             const itemDimensionName = result.interpretations[i]?.dimension || '';
             
+            const handleClick = () => {
+              if (containerRef.current) {
+                const rect = containerRef.current.getBoundingClientRect();
+                const containerTop = rect.top + window.scrollY;
+                const containerHeight = rect.height;
+                const viewportHeight = window.innerHeight;
+                const scrollableDistance = containerHeight - viewportHeight;
+                // Target progress for each section: 0, 0.25, 0.5, 0.75
+                const targetProgress = (i * 0.25) + 0.05; // adding small offset to guarantee it crosses the threshold
+                const targetScrollY = containerTop + (targetProgress * scrollableDistance);
+                window.scrollTo({ top: targetScrollY, behavior: 'smooth' });
+              }
+            };
+            
             return (
-              <div key={i} className="relative z-10 flex items-start gap-4">
+              <div 
+                key={i} 
+                onClick={handleClick}
+                className="relative z-10 flex items-start gap-4 cursor-pointer group"
+              >
                 <div className="flex items-center justify-center w-8 h-8 shrink-0">
                   <div 
                     className={`w-3 h-3 rounded-full transition-all duration-500 border-2 ${
                       isActive 
                         ? 'bg-zinc-200 border-zinc-100 scale-125' 
-                        : 'bg-zinc-900 border-zinc-700 scale-100'
+                        : 'bg-zinc-900 border-zinc-700 scale-100 group-hover:bg-zinc-700'
                     }`} 
                   />
                 </div>
                 
-                <div className={`flex flex-col pt-1 transition-all duration-500 ${isCurrent ? 'opacity-100' : 'opacity-40 hover:opacity-70'}`}>
+                <div className={`flex flex-col pt-1 transition-all duration-500 ${isCurrent ? 'opacity-100' : 'opacity-40 group-hover:opacity-100'}`}>
                   <div className="inline-flex items-center gap-2 px-3 py-1 mb-2 rounded-full border border-zinc-700/50 text-zinc-300 text-xs font-bold tracking-widest w-fit">
                     <span>维度 {i + 1}</span>
                     <span>•</span>
