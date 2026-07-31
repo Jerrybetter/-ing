@@ -205,28 +205,35 @@ export default function App() {
               {appMode === 'analyze' ? '看看你的生活习惯留下了哪些痕迹。' : '爆改的不是工位，是你的生活体验'}
             </p>
             
-            <div className="flex bg-zinc-900/80 p-1 rounded-full border border-zinc-800 backdrop-blur-md">
-              <button
-                onClick={() => setAppMode('analyze')}
-                className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${
-                  appMode === 'analyze' 
-                  ? 'bg-white text-black shadow-sm' 
-                  : 'text-zinc-400 hover:text-white'
-                }`}
-              >
-                工位人格测评
-              </button>
-              <button
-                onClick={() => setAppMode('redesign')}
-                className={`px-6 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-1.5 ${
-                  appMode === 'redesign' 
-                  ? 'bg-indigo-500 text-white shadow-sm' 
-                  : 'text-zinc-400 hover:text-white'
-                }`}
-              >
-                <Wand2 className="w-4 h-4" />
-                AI 爆改工位
-              </button>
+            <div className="relative group">
+              <div className="flex bg-zinc-900/80 p-1 rounded-full border border-zinc-800 backdrop-blur-md">
+                <button
+                  onClick={() => setAppMode('analyze')}
+                  className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${
+                    appMode === 'analyze' 
+                    ? 'bg-white text-black shadow-sm' 
+                    : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  工位人格测评
+                </button>
+                <button
+                  onClick={() => setAppMode('redesign')}
+                  className={`px-6 py-2 rounded-full text-sm font-bold transition-all flex items-center gap-1.5 ${
+                    appMode === 'redesign' 
+                    ? 'bg-indigo-500 text-white shadow-sm' 
+                    : 'text-zinc-400 hover:text-white'
+                  }`}
+                >
+                  <Wand2 className="w-4 h-4" />
+                  AI 爆改工位
+                </button>
+              </div>
+              
+              <div className="absolute top-1/2 -translate-y-1/2 -right-4 sm:-right-6 translate-x-full flex items-center gap-1.5 text-zinc-500 animate-pulse pointer-events-none">
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span className="text-xs font-medium whitespace-nowrap hidden sm:block">点击切换体验</span>
+              </div>
             </div>
           </div>
         )}
